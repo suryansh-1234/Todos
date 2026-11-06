@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Personal Todos</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <main class="container">
+
+        <h1>My Todos <span>✦</span></h1>
+        <p class="subtitle">Organize your day, one task at a time.</p>
+
+        <form action="/add" method="POST" class="add-form">
+            <input
+                type="text"
+                name="task"
+                placeholder="What needs to be done?"
+                maxlength="200"
+                required
+            >
+
+            <button type="submit">Add task +</button>
+        </form>
+
+        <section class="tasks">
+
+            <h2>Your tasks</h2>
+
+            {% if todos %}
+
+                {% for todo in todos %}
+
+                    <div class="task">
+
+                        <span class="{% if todo.completed %}done{% endif %}">
+                            {{ todo.task }}
+                        </span>
+
+                        <div class="actions">
+
+                            <a href="/complete/{{ todo.id }}">
+                                {% if todo.completed %}
+                                    ↩
+                                {% else %}
+                                    ✓
+                                {% endif %}
+                            </a>
+
+                            <a href="/delete/{{ todo.id }}"
+                               class="delete">×</a>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <p class="empty">
+                    No tasks yet. Add your first task! 🚀
+                </p>
+
+            {% endif %}
+
+        </section>
+
+        <footer>
+            Personal Todos · Built with Flask
+        </footer>
+
+    </main>
+
+</body>
+</html>
